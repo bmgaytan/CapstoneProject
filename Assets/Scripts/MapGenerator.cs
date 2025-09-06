@@ -45,7 +45,7 @@ public class MapGenerator : MonoBehaviour
         }
         else if (drawMode == DrawMode.ColorMap)
         {
-            mapDisplay.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap,mapWidth, mapHeight));
+            mapDisplay.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
         }
     }
 
