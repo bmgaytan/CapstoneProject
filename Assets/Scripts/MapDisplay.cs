@@ -10,8 +10,7 @@ public class MapDisplay : MonoBehaviour
 
     public MeshRenderer terrainRenderer;
     public MeshFilter terrainFilter;
-
-    public Renderer textureRenderer;
+    public GameObject terrainMesh;
 
     public void DrawTexture(Texture2D texture)
     {
@@ -25,10 +24,10 @@ public class MapDisplay : MonoBehaviour
         terrainRenderer.sharedMaterial.mainTexture = texture;
     }
 
-    /*public void GenerateMesh(float[,] noiseMap)
+    public void GenerateMesh(float[,] noiseMap)
     {
         mesh = new Mesh();
-        terrainMesh.GetComponent<MeshFilter>().mesh = mesh;
+        terrainMesh.GetComponent<MeshFilter>().sharedMesh = mesh;
 
         int mapWidth = noiseMap.GetLength(0);
         int mapHeight = noiseMap.GetLength(1);
@@ -60,5 +59,5 @@ public class MapDisplay : MonoBehaviour
         {
             Gizmos.DrawSphere(vertices[i], .9f);
         }
-    }*/
+    }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    public enum DrawMode { NoiseMap, ColorMap }
+    public enum DrawMode { NoiseMap, ColorMap, MeshTerrain }
     public DrawMode drawMode;
     public int mapWidth;
     public int mapHeight;
@@ -41,7 +41,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        mesh = MeshGenerator.GenerateMesh(noiseMap);
+        //mesh = MeshGenerator.GenerateMesh(noiseMap);
         MapDisplay mapDisplay = FindAnyObjectByType<MapDisplay>();
 
         if (drawMode == DrawMode.NoiseMap)
@@ -54,19 +54,7 @@ public class MapGenerator : MonoBehaviour
         }
         else if (drawMode == DrawMode.MeshTerrain)
         {
-            mapDisplay.DrawMesh(mesh, TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
-        }
-    }
-
-    void OnDrawGizmos()
-    {
-        if (mesh.vertices == null)
-        {
-            return;
-        }
-        for (int i = 0; i < mesh.vertices.Length; i++)
-        {
-            Gizmos.DrawSphere(mesh.vertices[i], .9f);
+            mapDisplay.GenerateMesh(noiseMap);
         }
     }
 
