@@ -52,22 +52,6 @@ public class MapGenerator : MonoBehaviour
         {
             mapDisplay.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
         }
-        else if (drawMode == DrawMode.MeshTerrain)
-        {
-            mapDisplay.DrawMesh(mesh, TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
-        }
-    }
-
-    void OnDrawGizmos()
-    {
-        if (mesh.vertices == null)
-        {
-            return;
-        }
-        for (int i = 0; i < mesh.vertices.Length; i++)
-        {
-            Gizmos.DrawSphere(mesh.vertices[i], .9f);
-        }
     }
 
     void OnValidate()
