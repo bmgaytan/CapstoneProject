@@ -1,9 +1,10 @@
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    public enum DrawMode { NoiseMap, ColorMap }
+    public enum DrawMode { NoiseMap, ColorMap, TerrainMesh }
     public DrawMode drawMode;
     public int mapWidth;
     public int mapHeight;
@@ -51,6 +52,10 @@ public class MapGenerator : MonoBehaviour
         else if (drawMode == DrawMode.ColorMap)
         {
             mapDisplay.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+        }
+        else if (drawMode == DrawMode.TerrainMesh)
+        {
+            mapDisplay.GenerateMesh(noiseMap);
         }
     }
 
