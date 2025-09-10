@@ -16,6 +16,8 @@ public class MapGenerator : MonoBehaviour
     public Vector2 offset;
     public bool autoUpdate;
     public TerrainType[] regions;
+
+    Mesh mesh;
     public void GenerateMap()
     {
         float[,] noiseMap = NoiseMap.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
@@ -38,7 +40,10 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+
+        mesh = MeshGenerator.GenerateMesh(noiseMap);
         MapDisplay mapDisplay = FindAnyObjectByType<MapDisplay>();
+
         if (drawMode == DrawMode.NoiseMap)
         {
             mapDisplay.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
@@ -49,7 +54,19 @@ public class MapGenerator : MonoBehaviour
         }
         else if (drawMode == DrawMode.MeshTerrain)
         {
-            mapDisplay.GenerateMesh(noiseMap, mapWidth, mapHeight);
+            mapDisplay.DrawMesh(mesh, TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        if (mesh.vertices == null)
+        {
+            return;
+        }
+        for (int i = 0; i < mesh.vertices.Length; i++)
+        {
+            Gizmos.DrawSphere(mesh.vertices[i], .9f);
         }
     }
 

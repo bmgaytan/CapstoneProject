@@ -5,31 +5,39 @@ using UnityEngine;
 public class MapDisplay : MonoBehaviour
 {
     Mesh mesh;
-    float verticeOffsetX;
-    float verticeOffsetZ;
     int verticeScale = 10;
     bool flipDirection = true;
     Vector3[] vertices;
     public Renderer textureRenderer;
 
-    public Renderer terrainMesh;
+    public MeshRenderer terrainRenderer;
+    public MeshFilter terrainFilter;
 
     public void DrawTexture(Texture2D texture)
     {
         textureRenderer.sharedMaterial.mainTexture = texture;
         textureRenderer.transform.localScale = new Vector3(texture.width, 1, texture.height);
     }
-    
-    public void GenerateMesh(float[,] noiseMap, int mapWidth, int mapHeight)
+
+    public void DrawMesh(Mesh mesh, Texture2D texture)
+    {
+        terrainFilter.sharedMesh = mesh;
+        terrainRenderer.sharedMaterial.mainTexture = texture;
+    }
+
+
+
+
+
+    /*public void GenerateMesh(float[,] noiseMap)
     {
         mesh = new Mesh();
         terrainMesh.GetComponent<MeshFilter>().mesh = mesh;
 
+        int mapWidth = noiseMap.GetLength(0);
+        int mapHeight = noiseMap.GetLength(1);
+
         vertices = new Vector3[(mapWidth + 1) * (mapHeight + 1)];
-
-        verticeOffsetX = mapWidth / 2 * 10;
-        verticeOffsetZ = mapWidth / 2 * 10;
-
 
         for (int z = 0, i = 0; z < mapHeight; z++)
         {
@@ -56,5 +64,5 @@ public class MapDisplay : MonoBehaviour
         {
             Gizmos.DrawSphere(vertices[i], .9f);
         }
-    }
+    }*/
 }
