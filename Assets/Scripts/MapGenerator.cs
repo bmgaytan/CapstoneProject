@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    public enum DrawMode { NoiseMap, ColorMap, MeshTerrain }
+    public enum DrawMode { NoiseMap, ColorMap }
     public DrawMode drawMode;
     public int mapWidth;
     public int mapHeight;

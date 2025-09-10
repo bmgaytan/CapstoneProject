@@ -1,5 +1,3 @@
-using System;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class MapDisplay : MonoBehaviour
@@ -13,6 +11,8 @@ public class MapDisplay : MonoBehaviour
     public MeshRenderer terrainRenderer;
     public MeshFilter terrainFilter;
 
+    public Renderer textureRenderer;
+
     public void DrawTexture(Texture2D texture)
     {
         textureRenderer.sharedMaterial.mainTexture = texture;
@@ -24,10 +24,6 @@ public class MapDisplay : MonoBehaviour
         terrainFilter.sharedMesh = mesh;
         terrainRenderer.sharedMaterial.mainTexture = texture;
     }
-
-
-
-
 
     /*public void GenerateMesh(float[,] noiseMap)
     {
