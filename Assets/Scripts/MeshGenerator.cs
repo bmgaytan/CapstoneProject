@@ -15,7 +15,7 @@ public static class MeshGenerator
 
         Mesh mesh;
 
-        mesh = GameObject.Find("Terrain Mesh").GetComponent<MeshFilter>().mesh;
+        mesh = GameObject.Find("Terrain Mesh").GetComponent<MeshFilter>().sharedMesh;
 
         for (int z = 0, i = 0; z < mapHeight; z++)
         {

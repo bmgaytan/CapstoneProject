@@ -5,6 +5,11 @@ public class MapDisplay : MonoBehaviour
     public Renderer textureRenderer;
     public GameObject terrainMesh;
     Vector3[] vertices;
+    int mapWidth;
+    int mapHeight;
+    int[] triangles;
+    Mesh mesh;
+    MeshFilter meshFilter;
 
     public void DrawTexture(Texture2D texture)
     {
@@ -14,15 +19,18 @@ public class MapDisplay : MonoBehaviour
 
     public void GenerateMesh(float[,] noiseMap)
     {
-        int mapWidth = noiseMap.GetLength(0);
-        int mapHeight = noiseMap.GetLength(1);
+        mapWidth = noiseMap.GetLength(0);
+        mapHeight = noiseMap.GetLength(1);
 
         int verticeScale = 10;
         bool flipDirection = true;
 
         vertices = new Vector3[(mapWidth + 1) * (mapHeight + 1)];
 
-        Mesh mesh = terrainMesh.GetComponent<MeshFilter>().sharedMesh;
+        meshFilter = terrainMesh.GetComponent<MeshFilter>();
+
+        mesh = new Mesh();
+        meshFilter.sharedMesh = mesh;
 
         for (int z = 0, i = 0; z < mapHeight; z++)
         {
@@ -34,8 +42,31 @@ public class MapDisplay : MonoBehaviour
                 i++;
             }
         }
+
+        triangles = new int[mapWidth * mapHeight * 6];
+        int vert = 0;
+        int tris = 0;
+        for (int z = 0; z < mapHeight; z++)
+        {
+            for (int x = 0; x < mapWidth; x++)
+            {
+                triangles[0 + tris] = vert + 0;
+                triangles[1 + tris] = vert + mapWidth;
+                triangles[2 + tris] = vert + 1;
+                triangles[3 + tris] = vert + 1;
+                triangles[4 + tris] = vert + mapWidth;
+                triangles[5 + tris] = vert + mapWidth + 1;
+
+                vert++;
+                tris += 6;
+            }
+            vert++;
+        }
+
         mesh.Clear();
         mesh.vertices = vertices;
+        mesh.triangles = triangles;
+        mesh.RecalculateNormals();
 
     }
     void OnDrawGizmos()
@@ -44,9 +75,17 @@ public class MapDisplay : MonoBehaviour
         {
             return;
         }
-        for (int i = 0; i < vertices.Length; i++)
+        /*or (int i = 0; i < vertices.Length; i++)
         {
             Gizmos.DrawSphere(vertices[i], .9f);
-        }
+        }*/
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(vertices[0], 0.9f);
+        Gizmos.DrawSphere(vertices[mapWidth - 1], 0.9f);
+        Gizmos.DrawSphere(vertices[(mapHeight - 1) * (mapWidth + 1)], 0.9f);
+        Gizmos.DrawSphere(vertices[mapHeight * (mapWidth - 1)], 0.9f);
+
+
     }
+
 }
