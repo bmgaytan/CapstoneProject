@@ -54,7 +54,7 @@ public class MapGenerator : MonoBehaviour
         }
         else if (drawMode == DrawMode.MeshTerrain)
         {
-            mapDisplay.GenerateMesh(noiseMap);
+            mapDisplay.DrawMesh(MeshGenerator.GenerateMesh(noiseMap), TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
         }
     }
 
