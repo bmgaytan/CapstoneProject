@@ -2,48 +2,70 @@ using UnityEngine;
 
 public static class MeshGenerator
 {
-    public static Mesh GenerateMesh(float[,] noiseMap)
+    public static MeshData GenerateMesh(float[,] noiseMap)
     {
-
-        int mapWidth = noiseMap.GetLength(0);
-        int mapHeight = noiseMap.GetLength(1);
-
+        int width = noiseMap.GetLength(0);
+        int height = noiseMap.GetLength(1);
+        
         int verticeScale = 10;
         bool flipDirection = true;
 
-        Vector3[] vertices = new Vector3[(mapWidth + 1) * (mapHeight + 1)];
 
-        Mesh mesh;
+        MeshData meshData = new MeshData(width, height);
+        int vert = 0;
 
-        mesh = GameObject.Find("Terrain Mesh").GetComponent<MeshFilter>().mesh;
-
-        for (int z = 0, i = 0; z < mapHeight; z++)
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < mapWidth; x++)
+            for (int x = 0; x < width; x++)
             {
-                float finalPosX = (x - mapWidth / 2f) * verticeScale * (flipDirection ? -1 : 1);
-                float finalPoxZ = (z - mapHeight / 2f) * verticeScale * (flipDirection ? -1 : 1);
-                vertices[i] = new Vector3(finalPosX, noiseMap[x, z] * 20, finalPoxZ);
-                i++;
+                float finalPosX = (x - width / 2f) * verticeScale * (flipDirection ? -1 : 1);
+                float finalPoxZ = (y - height / 2f) * verticeScale * (flipDirection ? -1 : 1);
+
+                meshData.vertices[vert] = new Vector3(finalPosX, noiseMap[x, y], finalPoxZ);
+                meshData.uvs[vert] = new Vector2(x / (float)width, y / (float)height);
+
+                if (x < width - 1 && y < height - 1)
+                {
+                    meshData.AddTriangles(vert, vert + width + 1, vert + width);
+                    meshData.AddTriangles(vert + width + 1, vert, vert + 1);
+
+                }
+                vert++;
             }
         }
-        mesh.Clear();
-        mesh.vertices = vertices;
+        return meshData;
+    }
+}
 
-        return mesh;
+public class MeshData
+{
+    public Vector3[] vertices;
+    public int[] triangles;
+    public Vector2[] uvs;
+    int triangleIndex;
 
-        /*void OnDrawGizmos()
-        {
-            if (vertices == null)
-            {
-                return;
-            }
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                Gizmos.DrawSphere(vertices[i], .9f);
-            }
-        }
-        OnDrawGizmos();*/
+    public MeshData(int meshWidth, int meshHeight)
+    {
+        vertices = new Vector3[meshWidth * meshWidth];
+        triangles = new int[(meshWidth - 1) * (meshHeight - 1) * 6];
+        uvs = new Vector2[meshWidth * meshHeight];
     }
 
+    public void AddTriangles(int a, int b, int c)
+    {
+        triangles[triangleIndex] = a;
+        triangles[triangleIndex + 1] = b;
+        triangles[triangleIndex + 2] = c;
+        triangleIndex += 3;
+    }
+
+    public Mesh CreateMesh()
+    {
+        Mesh mesh = new Mesh();
+        mesh.vertices = vertices;
+        mesh.triangles = triangles;
+        mesh.uv = uvs;
+        mesh.RecalculateNormals();
+        return mesh;
+    }
 }
