@@ -7,8 +7,12 @@ public static class MeshGenerator
         int width = noiseMap.GetLength(0);
         int height = noiseMap.GetLength(1);
         
-        int verticeScale = 10;
-        bool flipDirection = true;
+        //int verticeScale = 10;
+        //bool flipDirection = true;
+
+        //float halfWidth = (width - 1) / 2f;
+        //float halfHeight = (height - 1) / 2f;
+        
 
 
         MeshData meshData = new MeshData(width, height);
@@ -18,16 +22,17 @@ public static class MeshGenerator
         {
             for (int x = 0; x < width; x++)
             {
-                float finalPosX = (x - width / 2f) * verticeScale * (flipDirection ? -1 : 1);
-                float finalPoxZ = (y - height / 2f) * verticeScale * (flipDirection ? -1 : 1);
+                float finalPosX = (x - width / 2f) /* * verticeScale * (flipDirection ? -1 : 1)*/;
+                float finalPoxZ = (y - height / 2f) /** verticeScale * (flipDirection ? -1 : 1)*/;
 
-                meshData.vertices[vert] = new Vector3(finalPosX, noiseMap[x, y], finalPoxZ);
-                meshData.uvs[vert] = new Vector2(x / (float)width, y / (float)height);
+                meshData.vertices[vert] = new Vector3(finalPosX , noiseMap[x, y] * 5, finalPoxZ);
+
+                meshData.uvs[vert] = new Vector2(1f - ((float)x/width), 1f -((float)y/height));
 
                 if (x < width - 1 && y < height - 1)
                 {
-                    meshData.AddTriangles(vert, vert + width + 1, vert + width);
-                    meshData.AddTriangles(vert + width + 1, vert, vert + 1);
+                    meshData.AddTriangles(vert, vert + width, vert + width + 1);
+                    meshData.AddTriangles(vert, vert + width + 1, vert + 1);
 
                 }
                 vert++;
