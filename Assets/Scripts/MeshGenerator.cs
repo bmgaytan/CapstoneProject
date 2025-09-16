@@ -7,8 +7,8 @@ public static class MeshGenerator
         int width = noiseMap.GetLength(0);
         int height = noiseMap.GetLength(1);
         
-        //int verticeScale = 10;
-        //bool flipDirection = true;
+        int verticeScale = 10;
+        bool flipDirection = true;
 
         //float halfWidth = (width - 1) / 2f;
         //float halfHeight = (height - 1) / 2f;
@@ -22,12 +22,12 @@ public static class MeshGenerator
         {
             for (int x = 0; x < width; x++)
             {
-                float finalPosX = (x - width / 2f) /* * verticeScale * (flipDirection ? -1 : 1)*/;
-                float finalPoxZ = (y - height / 2f) /** verticeScale * (flipDirection ? -1 : 1)*/;
+                float finalPosX = (x - width / 2f) * (flipDirection ? -1 : 1) * verticeScale;
+                float finalPoxZ = (y - height / 2f) * (flipDirection ? -1 : 1) * verticeScale;
 
-                meshData.vertices[vert] = new Vector3(finalPosX , noiseMap[x, y] * 5, finalPoxZ);
+                meshData.vertices[vert] = new Vector3(finalPosX , noiseMap[x, y] * 10, finalPoxZ);
 
-                meshData.uvs[vert] = new Vector2(1f - ((float)x/width), 1f -((float)y/height));
+                meshData.uvs[vert] = new Vector2((float)x/width, (float)y/height);
 
                 if (x < width - 1 && y < height - 1)
                 {
