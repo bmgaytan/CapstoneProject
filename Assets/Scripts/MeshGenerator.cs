@@ -25,7 +25,7 @@ public static class MeshGenerator
                 float finalPosX = (x - width / 2f) * (flipDirection ? -1 : 1) * verticeScale;
                 float finalPoxZ = (y - height / 2f) * (flipDirection ? -1 : 1) * verticeScale;
 
-                meshData.vertices[vert] = new Vector3(finalPosX , noiseMap[x, y] * 10, finalPoxZ);
+                meshData.vertices[vert] = new Vector3(finalPosX , noiseMap[x, y] * 50, finalPoxZ);
 
                 meshData.uvs[vert] = new Vector2((float)x/width, (float)y/height);
 
