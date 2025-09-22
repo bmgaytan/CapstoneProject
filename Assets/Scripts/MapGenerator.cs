@@ -19,6 +19,9 @@ public class MapGenerator : MonoBehaviour
     public AnimationCurve heightCurve;
     public float heightMultiplier;
 
+    public GameObject terrainMesh;
+    public GameObject flatPlane;
+
     Mesh mesh;
     public void GenerateMap()
     {
@@ -48,14 +51,20 @@ public class MapGenerator : MonoBehaviour
 
         if (drawMode == DrawMode.NoiseMap)
         {
+            flatPlane.SetActive(true);
+            terrainMesh.SetActive(false);
             mapDisplay.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
         }
         else if (drawMode == DrawMode.ColorMap)
         {
+            flatPlane.SetActive(true);
+            terrainMesh.SetActive(false);
             mapDisplay.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
         }
         else if (drawMode == DrawMode.MeshTerrain)
         {
+            flatPlane.SetActive(false);
+            terrainMesh.SetActive(true);
             mapDisplay.DrawMesh(MeshGenerator.GenerateMesh(noiseMap, heightCurve, heightMultiplier), TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
         }
     }
