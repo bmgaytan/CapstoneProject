@@ -18,7 +18,7 @@ public static class NoiseMap
 
         if (scale <= 0)
         {
-            scale = 0.01f;
+            scale = 1f;
         }
 
         float maxNoiseHeight = float.MinValue;
